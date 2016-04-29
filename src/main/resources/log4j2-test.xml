@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%-5level - %msg%n" />
+			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" /> <!-- Na tela, mostra somente INFO para cima -->
+		</Console>
+		<RollingFile name="File" fileName="pje_out/logs/pje_scripts_auxiliares.log" filePattern="pje_out/logs/pje_scripts_auxiliares-%d{yyyy-MM-dd}--%i.log">
+			<Policies>
+				<OnStartupTriggeringPolicy />
+			</Policies>
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level - %msg%n" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<logger name="_main.PJEScriptsAuxiliares" level="DEBUG" />
+		<Root level="TRACE"> <!-- Por padrão, mostra tudo no log (prestar atenção no ThresholdFilter do ConsoleAppender) -->
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Root>
+	</Loggers>
+</Configuration>
