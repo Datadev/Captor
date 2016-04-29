@@ -1,6 +1,13 @@
 package br.com.datadev.captor.gui;
 
 import br.com.datadev.captor.Capturador;
+import br.com.datadev.captor.util.EnumComboBoxModel;
+import br.com.datadev.captor.util.FormatosEnum;
+import br.com.datadev.captor.util.IntegerDocument;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -13,6 +20,9 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        txtIntervalo.setText("1");
+        comboFormato.setSelectedIndex(0);
+        txtDestino.setText(System.getProperty("user.dir"));
     }
 
     /**
@@ -24,17 +34,100 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnSair = new javax.swing.JButton();
+        painelOpcoes = new javax.swing.JPanel();
+        lblIntervalo = new javax.swing.JLabel();
+        txtIntervalo = new javax.swing.JTextField();
+        lblFormato = new javax.swing.JLabel();
+        comboFormato = new javax.swing.JComboBox();
+        lblDestino = new javax.swing.JLabel();
+        txtDestino = new javax.swing.JTextField();
+        btnDestino = new javax.swing.JButton();
+        jProgressBar = new javax.swing.JProgressBar();
+        txtStatus = new javax.swing.JTextField();
         btnCapturar = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
 
         setTitle("Captor");
+        setResizable(false);
 
-        btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
+        painelOpcoes.setBorder(javax.swing.BorderFactory.createTitledBorder("Opções"));
+
+        lblIntervalo.setLabelFor(txtIntervalo);
+        lblIntervalo.setText("Intervalo (s):");
+
+        txtIntervalo.setDocument(new IntegerDocument(4));
+        txtIntervalo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtIntervalo.setText("1");
+        txtIntervalo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtIntervaloFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtIntervaloFocusLost(evt);
             }
         });
+
+        lblFormato.setLabelFor(comboFormato);
+        lblFormato.setText("Formato:");
+
+        comboFormato.setModel(new EnumComboBoxModel(FormatosEnum.class));
+
+        lblDestino.setLabelFor(txtDestino);
+        lblDestino.setText("Destino:");
+
+        txtDestino.setEditable(false);
+
+        btnDestino.setText("Escolher");
+        btnDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDestinoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout painelOpcoesLayout = new javax.swing.GroupLayout(painelOpcoes);
+        painelOpcoes.setLayout(painelOpcoesLayout);
+        painelOpcoesLayout.setHorizontalGroup(
+            painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelOpcoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIntervalo)
+                    .addComponent(lblFormato)
+                    .addComponent(lblDestino))
+                .addGap(18, 18, 18)
+                .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelOpcoesLayout.createSequentialGroup()
+                        .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIntervalo)
+                            .addComponent(comboFormato, 0, 139, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(painelOpcoesLayout.createSequentialGroup()
+                        .addComponent(txtDestino, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDestino)))
+                .addContainerGap())
+        );
+        painelOpcoesLayout.setVerticalGroup(
+            painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelOpcoesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIntervalo)
+                    .addComponent(txtIntervalo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFormato)
+                    .addComponent(comboFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(painelOpcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDestino)
+                    .addComponent(txtDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDestino))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        txtStatus.setEditable(false);
+        txtStatus.setEnabled(false);
 
         btnCapturar.setText("Capturar");
         btnCapturar.addActionListener(new java.awt.event.ActionListener() {
@@ -43,28 +136,48 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(165, Short.MAX_VALUE)
-                .addComponent(btnCapturar)
-                .addGap(38, 38, 38)
-                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(painelOpcoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtStatus)
+                    .addComponent(jProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCapturar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(246, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(painelOpcoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSair)
-                    .addComponent(btnCapturar))
-                .addGap(31, 31, 31))
+                    .addComponent(btnCapturar)
+                    .addComponent(btnSair))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -73,11 +186,61 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnCapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturarActionPerformed
-        Runnable r = new Capturador();
-        Thread t = new Thread(r);
-        t.start();
-
+        if (valida()) {
+            if (btnCapturar.getText().equals("Capturar")) {
+                int intervalo = Integer.valueOf(txtIntervalo.getText());
+                String destino = txtDestino.getText();
+                FormatosEnum formatosEnum = FormatosEnum.valueOf(String.valueOf(comboFormato.getSelectedItem()));
+                capturador = new Capturador(intervalo, destino, formatosEnum);
+                Thread t = new Thread(capturador);
+                t.start();
+                jProgressBar.setIndeterminate(true);
+                btnCapturar.setText("Parar");
+            } else {
+                capturador.setExecutar(false);
+                jProgressBar.setIndeterminate(false);
+                btnCapturar.setText("Capturar");
+            }
+        }
     }//GEN-LAST:event_btnCapturarActionPerformed
+
+    private void txtIntervaloFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIntervaloFocusGained
+        ((JTextField) evt.getComponent()).selectAll();
+    }//GEN-LAST:event_txtIntervaloFocusGained
+
+    private void txtIntervaloFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIntervaloFocusLost
+        JTextField componente = (JTextField) evt.getComponent();
+        if (componente.getText().isEmpty()) {
+            componente.setText("1");
+        }
+    }//GEN-LAST:event_txtIntervaloFocusLost
+
+    private void btnDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDestinoActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Destino");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            txtDestino.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_btnDestinoActionPerformed
+
+    private boolean valida() {
+        if (txtIntervalo.getText().isEmpty()) {
+            txtIntervalo.requestFocus();
+            JOptionPane.showMessageDialog(this, "Informe o intervalo de captura", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else if (comboFormato.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um formato de imagem", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else if (txtDestino.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Escolha o destino da captura", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @param args the command line arguments
@@ -93,21 +256,27 @@ public class Principal extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Principal().setVisible(true);
             }
@@ -116,6 +285,17 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapturar;
+    private javax.swing.JButton btnDestino;
     private javax.swing.JButton btnSair;
+    private javax.swing.JComboBox comboFormato;
+    private javax.swing.JProgressBar jProgressBar;
+    private javax.swing.JLabel lblDestino;
+    private javax.swing.JLabel lblFormato;
+    private javax.swing.JLabel lblIntervalo;
+    private javax.swing.JPanel painelOpcoes;
+    private javax.swing.JTextField txtDestino;
+    private javax.swing.JTextField txtIntervalo;
+    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
+    private Capturador capturador;
 }

@@ -1,6 +1,6 @@
 package br.com.datadev.captor;
 
-import java.awt.AWTEvent;
+import br.com.datadev.captor.util.FormatosEnum;
 import java.awt.AWTException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -10,7 +10,6 @@ import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.event.AWTEventListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +22,14 @@ import javax.imageio.ImageIO;
  * @author fcsilva
  */
 public class Captura {
+
+    private final String destino;
+    private final FormatosEnum formato;
+
+    public Captura(String destino, FormatosEnum formato) {
+        this.destino = destino;
+        this.formato = formato;
+    }
 
     public void capturar() {
         try {
@@ -48,13 +55,13 @@ public class Captura {
             Graphics2D graphics2D = screenShot.createGraphics();
             graphics2D.drawImage(cursor, x, y, 16, 16, null); // cursor.gif com 16x16.
 
-            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             Date now = new Date();
             String strDate = sdfDate.format(now);
 
-            String saida = "captura_" + strDate + ".jpg";
+            String saida = strDate + "." + formato.name();
 
-            ImageIO.write(screenShot, "jpg", new File(saida));
+            ImageIO.write(screenShot, formato.name(), new File(destino + File.separator + saida));
         } catch (AWTException | HeadlessException | IOException ex) {
             ex.printStackTrace();
         }
