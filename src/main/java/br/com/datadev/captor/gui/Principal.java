@@ -4,7 +4,9 @@ import br.com.datadev.captor.Capturador;
 import br.com.datadev.captor.util.EnumComboBoxModel;
 import br.com.datadev.captor.util.FormatosEnum;
 import br.com.datadev.captor.util.IntegerDocument;
-import java.io.File;
+import br.com.datadev.captor.util.PropertiesHelper;
+import java.io.IOException;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -20,9 +22,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
-        txtIntervalo.setText("1");
-        comboFormato.setSelectedIndex(0);
-        txtDestino.setText(System.getProperty("user.dir"));
+        carregaValoresIniciais();
     }
 
     /**
@@ -57,7 +57,6 @@ public class Principal extends javax.swing.JFrame {
 
         txtIntervalo.setDocument(new IntegerDocument(4));
         txtIntervalo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtIntervalo.setText("1");
         txtIntervalo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtIntervaloFocusGained(evt);
@@ -188,6 +187,8 @@ public class Principal extends javax.swing.JFrame {
     private void btnCapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturarActionPerformed
         if (valida()) {
             if (btnCapturar.getText().equals("Capturar")) {
+                salvaValoresUtilizados();
+                
                 int intervalo = Integer.valueOf(txtIntervalo.getText());
                 String destino = txtDestino.getText();
                 FormatosEnum formatosEnum = FormatosEnum.valueOf(String.valueOf(comboFormato.getSelectedItem()));
@@ -217,7 +218,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDestinoActionPerformed
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setCurrentDirectory(new java.io.File(txtDestino.getText()));
         chooser.setDialogTitle("Destino");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
@@ -240,6 +241,32 @@ public class Principal extends javax.swing.JFrame {
             return false;
         }
         return true;
+    }
+
+    private void carregaValoresIniciais() {
+        HashMap<String, String> propriedades;
+        try {
+            propriedades = new PropertiesHelper("pref.properties").getPropertiesMap();
+        } catch (IOException ex) {
+            propriedades = new HashMap<>();
+        }
+        txtIntervalo.setText(propriedades.getOrDefault("intervalo", "1"));
+        comboFormato.setSelectedIndex(Integer.valueOf(propriedades.getOrDefault("formato", "0")));
+        txtDestino.setText(propriedades.getOrDefault("destino", System.getProperty("user.dir")));
+    }
+
+    private void salvaValoresUtilizados() {
+        HashMap<String, String> propriedades = new HashMap<>();
+        propriedades.put("intervalo", txtIntervalo.getText());
+        propriedades.put("formato", String.valueOf(comboFormato.getSelectedIndex()));
+        propriedades.put("destino", txtDestino.getText());
+
+        try {
+            PropertiesHelper propertiesHelper = new PropertiesHelper("pref.properties");
+            propertiesHelper.setPropertiesMap(propriedades);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
