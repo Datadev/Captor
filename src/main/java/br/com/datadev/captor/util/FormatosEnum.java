@@ -21,7 +21,7 @@ public enum FormatosEnum implements Rotulado {
         return this.label;
     }
 
-    public static Enum getByLabel(String valor) {
+    public static FormatosEnum getByLabel(String valor) {
         for (FormatosEnum e : FormatosEnum.values()) {
             if (e.getLabel().equals(valor)) {
                 return e;

@@ -188,10 +188,10 @@ public class Principal extends javax.swing.JFrame {
         if (valida()) {
             if (btnCapturar.getText().equals("Capturar")) {
                 salvaValoresUtilizados();
-                
+
                 int intervalo = Integer.valueOf(txtIntervalo.getText());
                 String destino = txtDestino.getText();
-                FormatosEnum formatosEnum = FormatosEnum.getByLabel(String.valueOf(comboFormato()));
+                FormatosEnum formatosEnum = FormatosEnum.getByLabel(String.valueOf(comboFormato.getSelectedItem()));
                 capturador = new Capturador(intervalo, destino, formatosEnum);
                 Thread t = new Thread(capturador);
                 t.start();
@@ -250,6 +250,10 @@ public class Principal extends javax.swing.JFrame {
         } catch (IOException ex) {
             propriedades = new HashMap<>();
         }
+        
+        txtIntervalo.setText(propriedades.getOrDefault("intervalo", "1"));
+        comboFormato.setSelectedIndex(Integer.valueOf(propriedades.getOrDefault("formato", "0")));
+        txtDestino.setText(propriedades.getOrDefault("destino", System.getProperty("user.dir")));
     }
 
     private void salvaValoresUtilizados() {

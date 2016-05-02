@@ -16,7 +16,7 @@ public class Capturador implements Runnable {
     private final int intervalo;
     private final String destino;
     private final FormatosEnum formato;
-    private boolean executar = true;
+    private volatile boolean executar = true;
 
     public Capturador(int intervalo, String destino, FormatosEnum formato) {
         this.intervalo = intervalo;
@@ -32,18 +32,23 @@ public class Capturador implements Runnable {
     public void run() {
         try {
             final Captura captura = new Captura(destino, formato);
-            Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+
+            AWTEventListener listener = new AWTEventListener() {
 
                 @Override
                 public void eventDispatched(AWTEvent event) {
                     captura.capturar();
                 }
-            }, AWTEvent.MOUSE_EVENT_MASK);
+            };
+
+            Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.MOUSE_EVENT_MASK);
+            
             while (executar) {
                 captura.capturar();
                 TimeUnit.SECONDS.sleep(intervalo);
             }
-
+            
+            Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
