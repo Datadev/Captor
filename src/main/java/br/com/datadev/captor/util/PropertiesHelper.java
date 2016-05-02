@@ -19,8 +19,15 @@ public class PropertiesHelper {
 
     private final String arquivo;
 
-    public PropertiesHelper(String arquivo) throws FileNotFoundException {
+    public PropertiesHelper(String arquivo) throws IOException {
+        this(arquivo, false);
+    }
+    
+    public PropertiesHelper(String arquivo, boolean criar) throws FileNotFoundException, IOException {
         if (new File(arquivo).exists()) {
+            this.arquivo = arquivo;
+        } else if (criar){
+            new File(arquivo).createNewFile();
             this.arquivo = arquivo;
         } else {
             throw new FileNotFoundException(arquivo);

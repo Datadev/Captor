@@ -20,4 +20,13 @@ public enum FormatosEnum implements Rotulado {
     public String getLabel() {
         return this.label;
     }
+
+    public static Enum getByLabel(String valor) {
+        for (FormatosEnum e : FormatosEnum.values()) {
+            if (e.getLabel().equals(valor)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
