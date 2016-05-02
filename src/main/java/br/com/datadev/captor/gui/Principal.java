@@ -7,6 +7,7 @@ import br.com.datadev.captor.util.IntegerDocument;
 import br.com.datadev.captor.util.PropertiesHelper;
 import java.io.IOException;
 import java.util.HashMap;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
+        this.usuario = System.getProperty("user.name");
         initComponents();
         carregaValoresIniciais();
     }
@@ -48,6 +50,7 @@ public class Principal extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
 
         setTitle("Captor");
+        setIconImage(new ImageIcon(getClass().getClassLoader().getResource("Image-Capture-icon.png")).getImage());
         setResizable(false);
 
         painelOpcoes.setBorder(javax.swing.BorderFactory.createTitledBorder("Opções"));
@@ -180,8 +183,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        this.dispose();
-        System.exit(0);
+        this.setVisible(false);
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnCapturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturarActionPerformed
@@ -197,6 +199,7 @@ public class Principal extends javax.swing.JFrame {
                 t.start();
                 jProgressBar.setIndeterminate(true);
                 btnCapturar.setText("Parar");
+                this.setVisible(false);
             } else {
                 capturador.setExecutar(false);
                 jProgressBar.setIndeterminate(false);
@@ -246,11 +249,11 @@ public class Principal extends javax.swing.JFrame {
     private void carregaValoresIniciais() {
         HashMap<String, String> propriedades;
         try {
-            propriedades = new PropertiesHelper("pref.properties").getPropertiesMap();
+            propriedades = new PropertiesHelper(usuario + ".properties").getPropertiesMap();
         } catch (IOException ex) {
             propriedades = new HashMap<>();
         }
-        
+
         txtIntervalo.setText(propriedades.getOrDefault("intervalo", "1"));
         comboFormato.setSelectedIndex(Integer.valueOf(propriedades.getOrDefault("formato", "0")));
         txtDestino.setText(propriedades.getOrDefault("destino", System.getProperty("user.dir")));
@@ -263,7 +266,7 @@ public class Principal extends javax.swing.JFrame {
         propriedades.put("destino", txtDestino.getText());
 
         try {
-            PropertiesHelper propertiesHelper = new PropertiesHelper("pref.properties", true);
+            PropertiesHelper propertiesHelper = new PropertiesHelper(usuario + ".properties", true);
             propertiesHelper.setPropertiesMap(propriedades);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -326,4 +329,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
     private Capturador capturador;
+    private String usuario;
 }

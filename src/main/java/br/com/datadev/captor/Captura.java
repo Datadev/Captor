@@ -33,7 +33,7 @@ public class Captura {
 
     public void capturar() {
         try {
-            String resourceName = "cursor.gif";
+            String resourceName = "CursorVermelho.gif";
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             Image cursor = ImageIO.read(loader.getResourceAsStream(resourceName));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
