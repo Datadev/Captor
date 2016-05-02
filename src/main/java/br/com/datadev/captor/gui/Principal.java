@@ -5,7 +5,10 @@ import br.com.datadev.captor.util.EnumComboBoxModel;
 import br.com.datadev.captor.util.FormatosEnum;
 import br.com.datadev.captor.util.IntegerDocument;
 import br.com.datadev.captor.util.PropertiesHelper;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -191,8 +194,14 @@ public class Principal extends javax.swing.JFrame {
             if (btnCapturar.getText().equals("Capturar")) {
                 salvaValoresUtilizados();
 
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                Date now = new Date();
+                String strDate = sdfDate.format(now);
+                
                 int intervalo = Integer.valueOf(txtIntervalo.getText());
-                String destino = txtDestino.getText();
+                String destino = txtDestino.getText() + File.separator + usuario + "_" + strDate;
+                new File(destino).mkdirs();
+                
                 FormatosEnum formatosEnum = FormatosEnum.getByLabel(String.valueOf(comboFormato.getSelectedItem()));
                 capturador = new Capturador(intervalo, destino, formatosEnum);
                 Thread t = new Thread(capturador);

@@ -25,7 +25,7 @@ public class Tray {
     private TrayIcon trayIcon;
     private Principal principal;
 
-    public void TrayIconTeste() {
+    public void Tray() {
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
             Image image = new ImageIcon(this.getClass().getClassLoader().getResource("Image-Capture-icon.png")).getImage();
@@ -92,6 +92,6 @@ public class Tray {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
-        new Tray().TrayIconTeste();
+        new Tray().Tray();
     }
 }

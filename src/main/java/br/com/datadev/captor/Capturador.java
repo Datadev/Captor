@@ -4,7 +4,7 @@ import br.com.datadev.captor.util.FormatosEnum;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
-import java.io.File;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,21 +33,22 @@ public class Capturador implements Runnable {
         try {
             final Captura captura = new Captura(destino, formato);
 
-            AWTEventListener listener = new AWTEventListener() {
-
-                @Override
-                public void eventDispatched(AWTEvent event) {
+            AWTEventListener listener = (AWTEvent event) -> {
+//                if (((MouseEvent) event).getClickCount() > 0) {
+                  if (event.getID() == MouseEvent.MOUSE_CLICKED) {
+                    System.out.println(event.paramString());
                     captura.capturar();
                 }
             };
 
+//            Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.MOUSE_EVENT_MASK);
             Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.MOUSE_EVENT_MASK);
-            
+
             while (executar) {
                 captura.capturar();
                 TimeUnit.SECONDS.sleep(intervalo);
             }
-            
+
             Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
