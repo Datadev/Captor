@@ -2,7 +2,7 @@ package br.com.datadev.captor.gui;
 
 import br.com.datadev.captor.Capturador;
 import br.com.datadev.captor.util.EnumComboBoxModel;
-import br.com.datadev.captor.util.FormatosEnum;
+import br.com.datadev.captor.util.FormatoEnum;
 import br.com.datadev.captor.util.IntegerDocument;
 import br.com.datadev.captor.util.PropertiesHelper;
 import java.io.File;
@@ -75,7 +75,7 @@ public class Principal extends javax.swing.JFrame {
         lblFormato.setLabelFor(comboFormato);
         lblFormato.setText("Formato:");
 
-        comboFormato.setModel(new EnumComboBoxModel(FormatosEnum.class));
+        comboFormato.setModel(new EnumComboBoxModel(FormatoEnum.class));
 
         lblDestino.setLabelFor(txtDestino);
         lblDestino.setText("Destino:");
@@ -202,10 +202,10 @@ public class Principal extends javax.swing.JFrame {
                 String destino = txtDestino.getText() + File.separator + usuario + "_" + strDate;
                 new File(destino).mkdirs();
                 
-                FormatosEnum formatosEnum = FormatosEnum.getByLabel(String.valueOf(comboFormato.getSelectedItem()));
+                FormatoEnum formatosEnum = FormatoEnum.getByLabel(String.valueOf(comboFormato.getSelectedItem()));
                 capturador = new Capturador(intervalo, destino, formatosEnum);
-                Thread t = new Thread(capturador);
-                t.start();
+                thread = new Thread(capturador);
+                thread.start();
                 jProgressBar.setIndeterminate(true);
                 btnCapturar.setText("Parar");
                 this.setVisible(false);
@@ -213,6 +213,8 @@ public class Principal extends javax.swing.JFrame {
                 capturador.setExecutar(false);
                 jProgressBar.setIndeterminate(false);
                 btnCapturar.setText("Capturar");
+                thread.interrupt();
+
             }
         }
     }//GEN-LAST:event_btnCapturarActionPerformed
@@ -338,5 +340,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
     private Capturador capturador;
-    private String usuario;
+    private final String usuario;
+    private Thread thread;
 }

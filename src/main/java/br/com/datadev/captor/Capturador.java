@@ -1,11 +1,15 @@
 package br.com.datadev.captor;
 
-import br.com.datadev.captor.util.FormatosEnum;
+import br.com.datadev.captor.util.CursorEnum;
+import br.com.datadev.captor.util.FormatoEnum;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
+import lc.kra.system.mouse.GlobalMouseHook;
+import lc.kra.system.mouse.event.GlobalMouseAdapter;
+import lc.kra.system.mouse.event.GlobalMouseEvent;
 
 /**
  *
@@ -15,10 +19,10 @@ public class Capturador implements Runnable {
 
     private final int intervalo;
     private final String destino;
-    private final FormatosEnum formato;
+    private final FormatoEnum formato;
     private volatile boolean executar = true;
 
-    public Capturador(int intervalo, String destino, FormatosEnum formato) {
+    public Capturador(int intervalo, String destino, FormatoEnum formato) {
         this.intervalo = intervalo;
         this.destino = destino;
         this.formato = formato;
@@ -30,28 +34,40 @@ public class Capturador implements Runnable {
 
     @Override
     public void run() {
-        try {
-            final Captura captura = new Captura(destino, formato);
+        final Captura captura = new Captura(destino, formato);
 
-            AWTEventListener listener = (AWTEvent event) -> {
-//                if (((MouseEvent) event).getClickCount() > 0) {
-                  if (event.getID() == MouseEvent.MOUSE_CLICKED) {
-                    System.out.println(event.paramString());
-                    captura.capturar();
-                }
-            };
-
-//            Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.MOUSE_EVENT_MASK);
-            Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.MOUSE_EVENT_MASK);
-
-            while (executar) {
-                captura.capturar();
-                TimeUnit.SECONDS.sleep(intervalo);
+        GlobalMouseAdapter globalMouseAdapter = new GlobalMouseAdapter() {
+            @Override
+            public void mousePressed(GlobalMouseEvent event) {
             }
 
-            Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            @Override
+            public void mouseReleased(GlobalMouseEvent event) {
+                captura.capturar(CursorEnum.azul);
+            }
+
+            @Override
+            public void mouseMoved(GlobalMouseEvent event) {
+            }
+
+            @Override
+            public void mouseWheel(GlobalMouseEvent event) {
+            }
+        };
+
+        GlobalMouseHook mouseHook = new GlobalMouseHook();
+        mouseHook.addMouseListener(globalMouseAdapter);
+
+        while (executar) {
+            captura.capturar(CursorEnum.vermelho);
+            try {
+                TimeUnit.SECONDS.sleep(intervalo);
+            } catch (InterruptedException ex) {
+                executar = false;
+            }
+
         }
+
+        mouseHook.removeMouseListener(globalMouseAdapter);
     }
 }

@@ -77,6 +77,15 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      <id>system-hook-mvn-repo</id>
+      <url>https://raw.github.com/kristian/system-hook/mvn-repo/</url>
+    </repository>
+  </repositories>
   <properties>
     <mainClass>br.com.datadev.captor.gui.Tray</mainClass>
     <maven.compiler.source>1.8</maven.compiler.source>

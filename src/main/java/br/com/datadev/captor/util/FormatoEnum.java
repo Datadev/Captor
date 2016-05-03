@@ -4,7 +4,7 @@ package br.com.datadev.captor.util;
  *
  * @author fcsilva
  */
-public enum FormatosEnum implements Rotulado {
+public enum FormatoEnum implements Rotulado {
 
     gif("GIF"),
     jpg("JPG"),
@@ -12,7 +12,7 @@ public enum FormatosEnum implements Rotulado {
 
     private final String label;
 
-    FormatosEnum(String label) {
+    FormatoEnum(String label) {
         this.label = label;
     }
 
@@ -21,8 +21,8 @@ public enum FormatosEnum implements Rotulado {
         return this.label;
     }
 
-    public static FormatosEnum getByLabel(String valor) {
-        for (FormatosEnum e : FormatosEnum.values()) {
+    public static FormatoEnum getByLabel(String valor) {
+        for (FormatoEnum e : FormatoEnum.values()) {
             if (e.getLabel().equals(valor)) {
                 return e;
             }

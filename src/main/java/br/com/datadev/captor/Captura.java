@@ -1,6 +1,7 @@
 package br.com.datadev.captor;
 
-import br.com.datadev.captor.util.FormatosEnum;
+import br.com.datadev.captor.util.CursorEnum;
+import br.com.datadev.captor.util.FormatoEnum;
 import java.awt.AWTException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -24,16 +25,20 @@ import javax.imageio.ImageIO;
 public class Captura {
 
     private final String destino;
-    private final FormatosEnum formato;
+    private final FormatoEnum formato;
 
-    public Captura(String destino, FormatosEnum formato) {
+    public Captura(String destino, FormatoEnum formato) {
         this.destino = destino;
         this.formato = formato;
     }
 
     public void capturar() {
+        this.capturar(CursorEnum.vermelho);
+    }
+
+    public void capturar(CursorEnum cursorEnum) {
         try {
-            String resourceName = "CursorVermelho.gif";
+            String resourceName = cursorEnum.getLabel();
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             Image cursor = ImageIO.read(loader.getResourceAsStream(resourceName));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
