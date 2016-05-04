@@ -1,6 +1,7 @@
 package br.com.datadev.captor;
 
 import br.com.datadev.captor.gui.Mensagem;
+import br.com.datadev.captor.gui.TrayIcone;
 import br.com.datadev.captor.util.CursorEnum;
 import br.com.datadev.captor.util.FormatoEnum;
 import java.util.concurrent.TimeUnit;
@@ -55,16 +56,21 @@ public class Capturador implements Runnable {
         GlobalMouseHook mouseHook = new GlobalMouseHook();
         mouseHook.addMouseListener(globalMouseAdapter);
 
+        TrayIcone trayIcone = new TrayIcone();
+        Thread threadTrayIcone = new Thread(trayIcone);
+        threadTrayIcone.start();
+
         Mensagem mensagem = new Mensagem(destino);
-        Thread thread = new Thread(mensagem);
-        thread.start();
+        Thread threadMensagem = new Thread(mensagem);
+        threadMensagem.start();
 
         while (executar) {
             captura.capturar(CursorEnum.vermelho);
             try {
                 TimeUnit.SECONDS.sleep(intervalo);
             } catch (InterruptedException ex) {
-                thread.interrupt();
+                threadTrayIcone.interrupt();
+                threadMensagem.interrupt();
                 executar = false;
             }
 

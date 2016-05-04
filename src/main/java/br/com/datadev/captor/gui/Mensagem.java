@@ -36,5 +36,4 @@ public class Mensagem implements Runnable {
             }
         }
     }
-
 }
