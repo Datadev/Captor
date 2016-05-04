@@ -1,11 +1,8 @@
 package br.com.datadev.captor;
 
+import br.com.datadev.captor.gui.Mensagem;
 import br.com.datadev.captor.util.CursorEnum;
 import br.com.datadev.captor.util.FormatoEnum;
-import java.awt.AWTEvent;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 import lc.kra.system.mouse.GlobalMouseHook;
 import lc.kra.system.mouse.event.GlobalMouseAdapter;
@@ -58,11 +55,16 @@ public class Capturador implements Runnable {
         GlobalMouseHook mouseHook = new GlobalMouseHook();
         mouseHook.addMouseListener(globalMouseAdapter);
 
+        Mensagem mensagem = new Mensagem(destino);
+        Thread thread = new Thread(mensagem);
+        thread.start();
+
         while (executar) {
             captura.capturar(CursorEnum.vermelho);
             try {
                 TimeUnit.SECONDS.sleep(intervalo);
             } catch (InterruptedException ex) {
+                thread.interrupt();
                 executar = false;
             }
 

@@ -214,7 +214,6 @@ public class Principal extends javax.swing.JFrame {
                 jProgressBar.setIndeterminate(false);
                 btnCapturar.setText("Capturar");
                 thread.interrupt();
-
             }
         }
     }//GEN-LAST:event_btnCapturarActionPerformed
