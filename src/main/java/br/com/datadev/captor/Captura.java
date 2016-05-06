@@ -50,6 +50,10 @@ public class Captura {
 
                 allScreenBounds.width += screenBounds.width;
                 allScreenBounds.height = Math.max(allScreenBounds.height, screenBounds.height);
+                if (allScreenBounds.x > screenBounds.x)
+                    allScreenBounds.x = screenBounds.x;
+                if (allScreenBounds.y > screenBounds.y)
+                    allScreenBounds.y = screenBounds.y;
             }
 
             int x = MouseInfo.getPointerInfo().getLocation().x;
